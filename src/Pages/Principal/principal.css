@@ -1,0 +1,9 @@
+.cont-principal {
+    display: flex;
+    flex-direction: row;
+}
+.cont-header-main{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
