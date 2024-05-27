@@ -1,0 +1,19 @@
+/* modalPacientes.css */
+.text-modal .MuiTypography-root {
+  font-size: 4rem !important;
+}
+
+.text-modal .MuiTextField-root .MuiInputBase-input {
+  font-size: 1.7rem !important;
+}
+
+.text-modal .MuiFormControlLabel-root .MuiTypography-root {
+  font-size: 1.7rem !important;
+}
+
+.text-modal .MuiButton-root  {
+  font-size: 1.7rem !important;
+}
+.MuiFormLabel-root {
+    font-size: 1.3rem !important;
+}
