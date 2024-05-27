@@ -4,7 +4,8 @@ import App from "./App.jsx";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Principal from "./Pages/Principal/Principal.jsx";
-
+import Historial from "./Pages/Historial/Historial.jsx";
+import HistorialClinico from "./Pages/HistorialClinico/HistorialClinico.jsx";
 
 
 const router = createBrowserRouter([
@@ -16,7 +17,15 @@ const router = createBrowserRouter([
   {
     path: "pagePrincipal",
     element: <Principal />,
-  }
+  },
+  {
+    path: "pageHistorial",
+    element: <Historial />,
+  },
+  {
+    path: "pageHistorial/historialClinico",
+    element: <HistorialClinico />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
