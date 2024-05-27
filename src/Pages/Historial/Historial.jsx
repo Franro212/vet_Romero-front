@@ -1,17 +1,17 @@
 import Header from "../../Componentes/Header/Header";
 import Nav from "../../Componentes/Nav/Nav";
-import TablaPacientes from "../../Componentes/TablaPacientes/TablaPacientes";
-import "./principal.css";
+import TablaHistorial from "../../Componentes/TablaHistorial/TablaHistorial";
 
-function Principal() {
+
+function Historial() {
   return (
     <div className="cont-principal">
       <Nav />
       <div className="cont-header-main">
         <Header />
-        <TablaPacientes />
+        <TablaHistorial />
       </div>
     </div>
   );
 }
-export default Principal;
+export default Historial;
