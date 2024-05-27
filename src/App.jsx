@@ -10,10 +10,10 @@ function App() {
           src="/asets/logo_veterinaria-sinFondo.png"
           alt="Logo Veterinaria"
         />
-        <h2>Inicio de sesion</h2>
+        <h2 className="title-form">Inicio de sesion</h2>
 
         <div className="container_form">
-          <form action="#" method="POST">
+          <form className="form-login" action="#" method="POST">
             <label htmlFor="email">Email</label>
 
             <input
@@ -43,7 +43,7 @@ function App() {
             </a>
 
             <Link to={"/pagePrincipal"}>
-              <button type="submit" className="">
+              <button type="submit" className="btn-login">
                 Enviar
               </button>
             </Link>
