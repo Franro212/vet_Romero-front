@@ -3,13 +3,19 @@ import "./pacientes.css";
 import pacientes from "../../../info.js";
 import PacientesModal from "../ModalPacientes/ModalPacientes.jsx";
 import { useState } from "react";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 function TablaPacientes() {
   const [showModal, setShowModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [newPatient, setNewPatient]= useState(false);
+  const handleShow = () =>{
+    setNewPatient(true);
+    setShowModal(true)
+  }
   const handleShowModal = (patient) => {
     setSelectedPatient(patient);
+    setNewPatient(false);
     setShowModal(true);
   };
 
@@ -53,24 +59,44 @@ function TablaPacientes() {
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => (
-        <div className="cont-button">
-          <button
-            className="action btn-login"
+        <Box >
+          <Button
+            sx={{
+              width: "80px",
+              height: "35px",
+              fontSize: "15px",
+              color: "white",
+              backgroundColor: "#000000",
+              fontWeight: "bold",
+              ":hover": {
+                backgroundColor: "#6B7280",
+              },
+            }}
             onClick={() => {
-              handleShowModal(params.row)
+              handleShowModal(params.row);
             }}
           >
             Ver
-          </button>
-          <button
-            className="action btn-red btn-login"
+          </Button>
+          <Button
+            sx={{
+              height: "35px",
+              fontSize: "15px",
+              backgroundColor: " rgb(251, 65, 65)",
+              color: "white",
+              fontWeight: "bold",
+              marginLeft:"10px",
+              ":hover": {
+                backgroundColor: "#f56363",
+              },
+            }}
             onClick={() => {
               console.log("Button clicked:", params.row.id);
             }}
           >
             X
-          </button>
-        </div>
+          </Button>
+        </Box>
       ),
     },
   ];
@@ -95,16 +121,23 @@ function TablaPacientes() {
         open={showModal}
         handleClose={handleCloseModal}
         patientData={selectedPatient}
+        newPatient={newPatient}
       />
       <Button
+       onClick={() => {
+        handleShow();
+      }}
         sx={{
           width: "200px",
           alignSelf: "flex-end",
           fontSize: "15px",
           color: "white",
-          backgroundColor: "black",
+          backgroundColor: "#000000",
           fontWeight: "bold",
           marginBottom: "10px",
+          ":hover": {
+            backgroundColor: "#6B7280",
+          },
         }}
       >
         Nuevo Paciente

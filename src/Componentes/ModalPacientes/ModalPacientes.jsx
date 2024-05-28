@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
 import "./modalPacientes.css";
 import {
   Modal,
@@ -13,12 +14,21 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-// eslint-disable-next-line react/prop-types
-const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
-  // eslint-disable-next-line no-unused-vars
-  const [historial, setHistorial] = useState (isHistorial)
+const PacientesModal = ({ open, handleClose, patientData, newPatient }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState(patientData);
+  const [formData, setFormData] = useState(patientData || {});
+
+  useEffect(() => {
+    setFormData(patientData || {});
+    setIsEditing(false);
+  }, [patientData]);
+
+  useEffect(() => {
+    if (newPatient) {
+      setIsEditing(true);
+      setFormData({});
+    }
+  }, [newPatient]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -29,17 +39,23 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
   };
 
   const handleEdit = () => {
-    setIsEditing(!isEditing);
+    setIsEditing(true);
   };
 
   const handleSave = () => {
     // Lógica para guardar los datos
     setIsEditing(false);
+    handleClose();
   };
 
   const handleCancel = () => {
-    setFormData(patientData);
+    if (newPatient) {
+      setFormData({});
+    } else {
+      setFormData(patientData);
+    }
     setIsEditing(false);
+    handleClose();
   };
 
   return (
@@ -64,7 +80,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
           <CloseIcon />
         </IconButton>
         <Typography sx={{ fontSize: 30 }} variant="h6" component="h2">
-          Información del Paciente
+          {newPatient? "Agregar Nuevo Paciente" : "Información del Paciente"}
         </Typography>
         <Box component="form" sx={{ mt: 2 }}>
           <Grid container spacing={2}>
@@ -73,7 +89,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                 fullWidth
                 label="Propietario"
                 name="propietario"
-                value={formData?.propietario}
+                value={formData?.propietario || ""}
                 onChange={handleInputChange}
                 InputProps={{
                   readOnly: !isEditing,
@@ -85,7 +101,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                 fullWidth
                 label="Teléfono"
                 name="telefono"
-                value={formData?.telefono}
+                value={formData?.telefono || ""}
                 onChange={handleInputChange}
                 InputProps={{
                   readOnly: !isEditing,
@@ -97,7 +113,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                 control={
                   <Checkbox
                     name="socio"
-                    checked={formData?.socio}
+                    checked={formData?.socio || false}
                     onChange={handleInputChange}
                     disabled={!isEditing}
                   />
@@ -110,7 +126,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                 fullWidth
                 label="Número de Socio"
                 name="numeroSocio"
-                value={formData?.id}
+                value={formData?.id || ""}
                 onChange={handleInputChange}
                 InputProps={{
                   readOnly: !isEditing,
@@ -122,7 +138,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                 fullWidth
                 label="Nombre del Animal"
                 name="nombreAnimal"
-                value={formData?.nombre}
+                value={formData?.nombre || ""}
                 onChange={handleInputChange}
                 InputProps={{
                   readOnly: !isEditing,
@@ -134,7 +150,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                 fullWidth
                 label="Especie"
                 name="especie"
-                value={formData?.especie}
+                value={formData?.especie || ""}
                 onChange={handleInputChange}
                 InputProps={{
                   readOnly: !isEditing,
@@ -147,7 +163,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                 label="Fecha de Nacimiento"
                 type="date"
                 name="fechaNacimiento"
-                value={formData?.fechaNacimiento}
+                value={formData?.fechaNacimiento || ""}
                 onChange={handleInputChange}
                 InputLabelProps={{
                   shrink: true,
@@ -162,7 +178,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                 fullWidth
                 label="Sexo"
                 name="sexo"
-                value={formData?.sexo}
+                value={formData?.sexo || ""}
                 onChange={handleInputChange}
                 InputProps={{
                   readOnly: !isEditing,
@@ -174,7 +190,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                 control={
                   <Checkbox
                     name="castrado"
-                    checked={formData?.castrado}
+                    checked={formData?.castrado || false}
                     onChange={handleInputChange}
                     disabled={!isEditing}
                   />
@@ -187,7 +203,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                 control={
                   <Checkbox
                     name="vacunado"
-                    checked={formData?.vacunado}
+                    checked={formData?.vacunado || false}
                     onChange={handleInputChange}
                     disabled={!isEditing}
                   />
@@ -199,7 +215,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                   fullWidth
                   type="date"
                   name="fechaVacunado"
-                  value={formData?.fechaVacunado}
+                  value={formData?.fechaVacunado || ""}
                   onChange={handleInputChange}
                   InputLabelProps={{
                     shrink: true,
@@ -215,7 +231,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                 control={
                   <Checkbox
                     name="desparasitado"
-                    checked={formData?.desparasitado}
+                    checked={formData?.desparasitado || false}
                     onChange={handleInputChange}
                     disabled={!isEditing}
                   />
@@ -227,7 +243,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                   fullWidth
                   type="date"
                   name="fechaDesparasitado"
-                  value={formData?.fechaDesparasitado}
+                  value={formData?.fechaDesparasitado || ""}
                   onChange={handleInputChange}
                   InputLabelProps={{
                     shrink: true,
@@ -243,7 +259,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                 control={
                   <Checkbox
                     name="antipulgas"
-                    checked={formData?.antipulgas}
+                    checked={formData?.antipulgas || false}
                     onChange={handleInputChange}
                     disabled={!isEditing}
                   />
@@ -255,7 +271,7 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
                   fullWidth
                   type="date"
                   name="fechaAntipulgas"
-                  value={formData?.fechaAntipulgas}
+                  value={formData?.fechaAntipulgas || ""}
                   onChange={handleInputChange}
                   InputLabelProps={{
                     shrink: true,
@@ -268,18 +284,15 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
             </Grid>
           </Grid>
         </Box>
-        {historial? (""
-        ) : (
-
-          <Box sx={{ mt: 3, textAlign: "right" }}>
-          {isEditing ? (
+        <Box sx={{ mt: 3, textAlign: "right" }}>
+          {newPatient ? (
             <>
               <Button
                 variant="contained"
                 color="secondary"
                 onClick={handleCancel}
                 sx={{ mr: 1 }}
-                >
+              >
                 Cancelar
               </Button>
               <Button variant="contained" color="primary" onClick={handleSave}>
@@ -287,12 +300,37 @@ const PacientesModal = ({ open, handleClose, patientData, isHistorial }) => {
               </Button>
             </>
           ) : (
-            <Button variant="contained" color="primary" onClick={handleEdit}>
-              Editar
-            </Button>
+            <>
+              {isEditing ? (
+                <>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleCancel}
+                    sx={{ mr: 1 }}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSave}
+                  >
+                    Guardar
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleEdit}
+                >
+                  Editar
+                </Button>
+              )}
+            </>
           )}
         </Box>
-              )}
       </Box>
     </Modal>
   );
