@@ -57,7 +57,7 @@ function TablaPacientes() {
           <button
             className="action btn-login"
             onClick={() => {
-              handleShowModal(params.row), console.log(params.row);
+              handleShowModal(params.row)
             }}
           >
             Ver
