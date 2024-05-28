@@ -5,7 +5,8 @@ import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Principal from "./Pages/Principal/Principal.jsx";
 import Historial from "./Pages/Historial/Historial.jsx";
-import HistorialClinico from "./Pages/HistorialClinico/HistorialClinico.jsx";
+import HistorialClinico from "./Pages/Historial/HistorialClinico/HistorialClinico.jsx";
+
 
 
 const router = createBrowserRouter([
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
   },
   {
     path: "pageHistorial",
-    element: <Historial />,
+    element: <Historial/>,
   },
   {
     path: "pageHistorial/historialClinico",
