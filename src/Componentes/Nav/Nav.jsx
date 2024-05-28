@@ -9,29 +9,27 @@ function Nav() {
       <div className="sidebar">
         <div className="sidebar-content">
           <div className="sidebar-header">
-            <a className="sidebar-link" href="#">
-              <img
-                className="sidebar-logo"
-                src="/asets/logo_veterinaria-sinFondo.png"
-                alt="logo"
-              />
-            </a>
+            <img
+              className="sidebar-logo"
+              src="/asets/logo_veterinaria-sinFondo.png"
+              alt="logo"
+            />
           </div>
           <div className="sidebar-body">
             <nav className="nav">
-              <Link to={"/pagePrincipal"}>
+              <Link style={{ textDecoration: "none" }} to={"/pagePrincipal"}>
                 <a className="nav-link" href="#">
                   <FaDog className="icon" />
                   Pacientes
                 </a>
               </Link>
-              <Link>
+              <Link style={{ textDecoration: "none" }}>
                 <a className="nav-link" href="#">
                   <FaCalendarAlt className="icon" />
                   Citas
                 </a>
               </Link>
-              <Link to={"/pageHistorial"}>
+              <Link style={{ textDecoration: "none" }} to={"/pageHistorial"}>
                 <a className="nav-link" href="#">
                   <FaRegClipboard className="icon" />
                   Historial Clínico
