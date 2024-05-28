@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-const PacientesModal = ({ open, handleClose, patientData, newPatient }) => {
+const PacientesModal = ({ open, handleClose, patientData, newPatient, hideButton}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(patientData || {});
 
@@ -284,6 +284,7 @@ const PacientesModal = ({ open, handleClose, patientData, newPatient }) => {
             </Grid>
           </Grid>
         </Box>
+          {hideButton? (""): (
         <Box sx={{ mt: 3, textAlign: "right" }}>
           {newPatient ? (
             <>
@@ -331,6 +332,7 @@ const PacientesModal = ({ open, handleClose, patientData, newPatient }) => {
             </>
           )}
         </Box>
+        )}
       </Box>
     </Modal>
   );

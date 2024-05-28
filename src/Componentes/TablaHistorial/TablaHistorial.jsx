@@ -9,9 +9,11 @@ import { useNavigate } from "react-router-dom";
 function TablaHistorial() {
   const [showModal, setShowModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [hideButton, setHideButton] = useState(false);
   const navigate = useNavigate();
   const handleShowModal = (patient) => {
     setSelectedPatient(patient);
+    setHideButton(true)
     setShowModal(true);
   };
 
@@ -58,29 +60,32 @@ function TablaHistorial() {
         <div className="cont-button">
           <Button
             sx={{
-              backgroundColor: "#000000",
+              width: "80px",
+              height: "35px",
+              fontSize: "11px",
               color: "#ffffff",
+              backgroundColor: "#000000",
               fontWeight: "bold",
-              fontSize: "10px",
               ":hover": {
                 backgroundColor: "#6B7280",
               },
             }}
             className="action btn-login"
             onClick={() => {
-              handleShowModal(params.row), console.log(params.row);
+              handleShowModal(params.row);
             }}
           >
             Perfil
           </Button>
           <Button
             sx={{
-              backgroundColor: "#000000",
-              color: "#ffffff",
-              fontWeight: "bold",
-              fontSize: "10px",
               width: "80px",
-              marginLeft: "10px",
+              height: "35px",
+              fontSize: "11px",
+              color: "#ffffff",
+              marginLeft:"10px",
+              backgroundColor: "#000000",
+              fontWeight: "bold",
               ":hover": {
                 backgroundColor: "#6B7280",
               },
@@ -117,6 +122,7 @@ function TablaHistorial() {
         handleClose={handleCloseModal}
         patientData={selectedPatient}
         isHistorial={true}
+        hideButton={hideButton}
       />
 
       <DataGrid

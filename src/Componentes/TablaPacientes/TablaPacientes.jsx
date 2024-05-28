@@ -8,11 +8,11 @@ import { Box, Button } from "@mui/material";
 function TablaPacientes() {
   const [showModal, setShowModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
-  const [newPatient, setNewPatient]= useState(false);
-  const handleShow = () =>{
+  const [newPatient, setNewPatient] = useState(false);
+  const handleShow = () => {
     setNewPatient(true);
-    setShowModal(true)
-  }
+    setShowModal(true);
+  };
   const handleShowModal = (patient) => {
     setSelectedPatient(patient);
     setNewPatient(false);
@@ -59,7 +59,7 @@ function TablaPacientes() {
       sortable: false,
       disableColumnMenu: true,
       renderCell: (params) => (
-        <Box >
+        <Box>
           <Button
             sx={{
               width: "80px",
@@ -85,7 +85,7 @@ function TablaPacientes() {
               backgroundColor: " rgb(251, 65, 65)",
               color: "white",
               fontWeight: "bold",
-              marginLeft:"10px",
+              marginLeft: "10px",
               ":hover": {
                 backgroundColor: "#f56363",
               },
@@ -122,11 +122,12 @@ function TablaPacientes() {
         handleClose={handleCloseModal}
         patientData={selectedPatient}
         newPatient={newPatient}
+        hideButton={false}
       />
       <Button
-       onClick={() => {
-        handleShow();
-      }}
+        onClick={() => {
+          handleShow();
+        }}
         sx={{
           width: "200px",
           alignSelf: "flex-end",
