@@ -1,5 +1,4 @@
-import { DataGrid } from "@mui/x-data-grid";
-
+import { DataGrid, GridToolbarContainer, GridToolbarFilterButton } from "@mui/x-data-grid";
 import pacientes from "../../../info.js";
 import PacientesModal from "../ModalPacientes/ModalPacientes.jsx";
 import { useState } from "react";
@@ -13,7 +12,7 @@ function TablaHistorial() {
   const navigate = useNavigate();
   const handleShowModal = (patient) => {
     setSelectedPatient(patient);
-    setHideButton(true)
+    setHideButton(true);
     setShowModal(true);
   };
 
@@ -56,18 +55,23 @@ function TablaHistorial() {
       flex: 1,
       sortable: false,
       disableColumnMenu: true,
+      renderHeader: () => (
+        <GridToolbarContainer>
+          <GridToolbarFilterButton />
+        </GridToolbarContainer>
+      ),
       renderCell: (params) => (
         <div className="cont-button">
           <Button
             sx={{
               width: "80px",
               height: "35px",
-              fontSize: "11px",
+              fontSize: "15px",
               color: "#ffffff",
-              backgroundColor: "#000000",
               fontWeight: "bold",
+              backgroundColor: "var(--primario)",
               ":hover": {
-                backgroundColor: "#6B7280",
+                backgroundColor: "#35c4bf",
               },
             }}
             className="action btn-login"
@@ -79,15 +83,15 @@ function TablaHistorial() {
           </Button>
           <Button
             sx={{
-              width: "80px",
+              width: "95px",
               height: "35px",
-              fontSize: "11px",
+              fontSize: "15px",
               color: "#ffffff",
-              marginLeft:"10px",
-              backgroundColor: "#000000",
+              marginLeft: "10px",
               fontWeight: "bold",
+              backgroundColor: "var(--primario)",
               ":hover": {
-                backgroundColor: "#6B7280",
+                backgroundColor: "#35c4bf",
               },
             }}
             className="action btn-red btn-login"
@@ -110,13 +114,16 @@ function TablaHistorial() {
     sexo: paciente.sexo,
   }));
   const localeText = {
+    toolbarFilters: "Buscar",
+    filterPanelInputLabel: "Propietario",
+    filterPanelInputPlaceholder: "Buscar pacientes...",
     footerTotalRows: "Filas Totales:",
     noRowsLabel: "No hay pacientes",
     errorOverlayDefaultLabel: "Ha ocurrido un error",
   };
 
   return (
-    <div className="cont-tab">
+    <div className="cont-tab cont-tab-historial">
       <PacientesModal
         open={showModal}
         handleClose={handleCloseModal}

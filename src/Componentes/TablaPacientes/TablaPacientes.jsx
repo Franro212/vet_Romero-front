@@ -1,4 +1,8 @@
-import { DataGrid } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridToolbarContainer,
+  GridToolbarFilterButton,
+} from "@mui/x-data-grid";
 import "./pacientes.css";
 import pacientes from "../../../info.js";
 import PacientesModal from "../ModalPacientes/ModalPacientes.jsx";
@@ -58,6 +62,11 @@ function TablaPacientes() {
       flex: 1,
       sortable: false,
       disableColumnMenu: true,
+      renderHeader: () => (
+        <GridToolbarContainer>
+          <GridToolbarFilterButton />
+        </GridToolbarContainer>
+      ),
       renderCell: (params) => (
         <Box>
           <Button
@@ -66,10 +75,10 @@ function TablaPacientes() {
               height: "35px",
               fontSize: "15px",
               color: "white",
-              backgroundColor: "#000000",
               fontWeight: "bold",
+              backgroundColor: "var(--primario)",
               ":hover": {
-                backgroundColor: "#6B7280",
+                backgroundColor: "#35c4bf",
               },
             }}
             onClick={() => {
@@ -82,10 +91,10 @@ function TablaPacientes() {
             sx={{
               height: "35px",
               fontSize: "15px",
-              backgroundColor: " rgb(251, 65, 65)",
               color: "white",
               fontWeight: "bold",
               marginLeft: "10px",
+              backgroundColor: " rgb(251, 65, 65)",
               ":hover": {
                 backgroundColor: "#f56363",
               },
@@ -110,6 +119,9 @@ function TablaPacientes() {
     vacunado: paciente.vacunado,
   }));
   const localeText = {
+    toolbarFilters: "Buscar",
+    filterPanelInputLabel: "Propietario",
+    filterPanelInputPlaceholder: "Buscar pacientes...",
     footerTotalRows: "Filas Totales:",
     noRowsLabel: "No hay pacientes",
     errorOverlayDefaultLabel: "Ha ocurrido un error",
@@ -133,11 +145,11 @@ function TablaPacientes() {
           alignSelf: "flex-end",
           fontSize: "15px",
           color: "white",
-          backgroundColor: "#000000",
           fontWeight: "bold",
           marginBottom: "10px",
+          backgroundColor: "var(--primario)",
           ":hover": {
-            backgroundColor: "#6B7280",
+            backgroundColor: "#35c4bf",
           },
         }}
       >

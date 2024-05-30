@@ -14,7 +14,13 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-const PacientesModal = ({ open, handleClose, patientData, newPatient, hideButton}) => {
+const PacientesModal = ({
+  open,
+  handleClose,
+  patientData,
+  newPatient,
+  hideButton,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(patientData || {});
 
@@ -80,7 +86,7 @@ const PacientesModal = ({ open, handleClose, patientData, newPatient, hideButton
           <CloseIcon />
         </IconButton>
         <Typography sx={{ fontSize: 30 }} variant="h6" component="h2">
-          {newPatient? "Agregar Nuevo Paciente" : "Información del Paciente"}
+          {newPatient ? "Agregar Nuevo Paciente" : "Información del Paciente"}
         </Typography>
         <Box component="form" sx={{ mt: 2 }}>
           <Grid container spacing={2}>
@@ -284,54 +290,85 @@ const PacientesModal = ({ open, handleClose, patientData, newPatient, hideButton
             </Grid>
           </Grid>
         </Box>
-          {hideButton? (""): (
-        <Box sx={{ mt: 3, textAlign: "right" }}>
-          {newPatient ? (
-            <>
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={handleCancel}
-                sx={{ mr: 1 }}
-              >
-                Cancelar
-              </Button>
-              <Button variant="contained" color="primary" onClick={handleSave}>
-                Guardar
-              </Button>
-            </>
-          ) : (
-            <>
-              {isEditing ? (
-                <>
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={handleCancel}
-                    sx={{ mr: 1 }}
-                  >
-                    Cancelar
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSave}
-                  >
-                    Guardar
-                  </Button>
-                </>
-              ) : (
+        {hideButton ? (
+          ""
+        ) : (
+          <Box sx={{ mt: 3, textAlign: "right" }}>
+            {newPatient ? (
+              <>
                 <Button
                   variant="contained"
-                  color="primary"
-                  onClick={handleEdit}
+                  onClick={handleCancel}
+                  sx={{
+                    mr: 1,
+                    backgroundColor: " rgb(251, 65, 65)",
+                    ":hover": {
+                      backgroundColor: "#f56363",
+                    },
+                  }}
                 >
-                  Editar
+                  Cancelar
                 </Button>
-              )}
-            </>
-          )}
-        </Box>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "var(--primario)",
+                    ":hover": {
+                      backgroundColor: "#35c4bf",
+                    },
+                  }}
+                  onClick={handleSave}
+                >
+                  Guardar
+                </Button>
+              </>
+            ) : (
+              <>
+                {isEditing ? (
+                  <>
+                    <Button
+                      variant="contained"
+                      onClick={handleCancel}
+                      sx={{
+                        mr: 1,
+                        backgroundColor: " rgb(251, 65, 65)",
+                        ":hover": {
+                          backgroundColor: "#f56363",
+                        },
+                      }}
+                    >
+                      Cancelar
+                    </Button>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "var(--primario)",
+                        ":hover": {
+                          backgroundColor: "#35c4bf",
+                        },
+                      }}
+                      onClick={handleSave}
+                    >
+                      Guardar
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "var(--primario)",
+                      ":hover": {
+                        backgroundColor: "#35c4bf",
+                      },
+                    }}
+                    onClick={handleEdit}
+                  >
+                    Editar
+                  </Button>
+                )}
+              </>
+            )}
+          </Box>
         )}
       </Box>
     </Modal>

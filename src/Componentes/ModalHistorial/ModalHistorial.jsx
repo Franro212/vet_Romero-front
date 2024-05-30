@@ -1,26 +1,35 @@
-import  { useState } from 'react';
-import { Modal, Box, Typography, TextField, FormControlLabel, Checkbox, Button, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import { useState } from "react";
+import {
+  Modal,
+  Box,
+  Typography,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Button,
+  IconButton,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 // eslint-disable-next-line react/prop-types
 const ModalHistorial = ({ open, handleClose, handleSave }) => {
   const [formData, setFormData] = useState({
-    fechaConsulta: '',
+    fechaConsulta: "",
     tomoMedicamento: false,
-    cualesMedicamentos: '',
-    motivoConsulta: '',
-    sistemaComprometido: '',
+    cualesMedicamentos: "",
+    motivoConsulta: "",
+    sistemaComprometido: "",
     examenesColaterales: false,
-    tipoExamen: '',
-    evolucion: '',
-    proximaConsulta: '',
+    tipoExamen: "",
+    evolucion: "",
+    proximaConsulta: "",
   });
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -31,29 +40,29 @@ const ModalHistorial = ({ open, handleClose, handleSave }) => {
 
   const handleFormCancel = () => {
     setFormData({
-      fechaConsulta: '',
+      fechaConsulta: "",
       tomoMedicamento: false,
-      cualesMedicamentos: '',
-      motivoConsulta: '',
-      sistemaComprometido: '',
+      cualesMedicamentos: "",
+      motivoConsulta: "",
+      sistemaComprometido: "",
       examenesColaterales: false,
-      tipoExamen: '',
-      evolucion: '',
-      proximaConsulta: '',
+      tipoExamen: "",
+      evolucion: "",
+      proximaConsulta: "",
     });
     handleClose();
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal id="modal" open={open} onClose={handleClose}>
       <Box
         sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 500,
-          bgcolor: 'background.paper',
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 800,
+          bgcolor: "background.paper",
           boxShadow: 24,
           p: 4,
           borderRadius: 2,
@@ -61,14 +70,17 @@ const ModalHistorial = ({ open, handleClose, handleSave }) => {
       >
         <IconButton
           onClick={handleClose}
-          sx={{ position: 'absolute', top: 8, right: 8 }}
+          sx={{ position: "absolute", top: 8, right: 8 }}
         >
           <CloseIcon />
         </IconButton>
         <Typography variant="h6" component="h2" gutterBottom>
           Agregar Nueva Consulta
         </Typography>
-        <Box component="form" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <Box
+          component="form"
+          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+        >
           <TextField
             label="Fecha de Consulta"
             type="date"
@@ -78,6 +90,7 @@ const ModalHistorial = ({ open, handleClose, handleSave }) => {
             InputLabelProps={{ shrink: true }}
           />
           <FormControlLabel
+            sx={{ width: "100%" }}
             control={
               <Checkbox
                 name="tomoMedicamento"
@@ -149,11 +162,34 @@ const ModalHistorial = ({ open, handleClose, handleSave }) => {
             onChange={handleInputChange}
             InputLabelProps={{ shrink: true }}
           />
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 2 }}>
-            <Button variant="contained" color="secondary" onClick={handleFormCancel}>
+          <Box
+            sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 2 }}
+          >
+            <Button
+              sx={{
+                fontSize: "1.7rem",
+                backgroundColor: " rgb(251, 65, 65)",
+                ":hover": {
+                  backgroundColor: "#f56363",
+                },
+              }}
+              variant="contained"
+              color="secondary"
+              onClick={handleFormCancel}
+            >
               Cancelar
             </Button>
-            <Button variant="contained" color="primary" onClick={handleFormSave}>
+            <Button
+              sx={{
+                fontSize: "1.7rem",
+                backgroundColor: "var(--primario)",
+                ":hover": {
+                  backgroundColor: "#35c4bf",
+                },
+              }}
+              variant="contained"
+              onClick={handleFormSave}
+            >
               Guardar
             </Button>
           </Box>

@@ -84,7 +84,7 @@ function HistorialClinico() {
           >
             Nueva ficha
           </Button>
-          <Box>
+          <Box id="fichas">
             {consultas.map((consulta, index) => (
               <Paper
                 key={index}
