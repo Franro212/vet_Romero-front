@@ -1,5 +1,5 @@
 :root {
-  --primario: #45A8A5;
+  --primario: #45a8a5;
   --black: #141414;
   --gray: #f5f5f5;
   --white: #ffffff;
@@ -16,7 +16,7 @@ html {
   zoom: 75%;
 }
 body {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: 1.8rem;
   color: var(--black);
 }

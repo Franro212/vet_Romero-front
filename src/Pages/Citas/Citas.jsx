@@ -1,18 +1,17 @@
+import Calendario from "../../Componentes/Calendario/Calendario";
 import Header from "../../Componentes/Header/Header";
 import Nav from "../../Componentes/Nav/Nav";
-import TablaPacientes from "../../Componentes/TablaPacientes/TablaPacientes";
 
-import "./principal.css";
 
-function Pacientes() {
+function Citas() {
   return (
     <div className="cont-principal">
       <Nav />
       <div className="cont-header-main">
         <Header />
-        <TablaPacientes />
+        <Calendario />
       </div>
     </div>
   );
 }
-export default Pacientes;
+export default Citas;

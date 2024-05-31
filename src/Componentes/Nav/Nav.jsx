@@ -23,7 +23,7 @@ function Nav() {
                   Pacientes
                 </a>
               </Link>
-              <Link style={{ textDecoration: "none" }}>
+              <Link to={"/pageCitas"} style={{ textDecoration: "none" }}>
                 <a className="nav-link" href="#">
                   <FaCalendarAlt className="icon" />
                   Citas

@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import "./app.css";
+import moment from "moment";
+import "moment/locale/es";
+moment.locale("es");
 
 function App() {
   return (
