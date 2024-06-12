@@ -1,4 +1,4 @@
-import { FaDog, FaCalendarAlt, FaUsers } from "react-icons/fa";
+import { FaDog, FaCalendarAlt} from "react-icons/fa";
 import { FaRegClipboard } from "react-icons/fa6";
 import "./nav.css";
 import { Link } from "react-router-dom";
@@ -23,22 +23,18 @@ function Nav() {
                   Pacientes
                 </a>
               </Link>
-              <Link to={"/pageCitas"} style={{ textDecoration: "none" }}>
-                <a className="nav-link" href="#">
-                  <FaCalendarAlt className="icon" />
-                  Citas
-                </a>
-              </Link>
               <Link style={{ textDecoration: "none" }} to={"/pageHistorial"}>
                 <a className="nav-link" href="#">
                   <FaRegClipboard className="icon" />
                   Historial Clínico
                 </a>
               </Link>
-              <a className="nav-link" href="#">
-                <FaUsers className="icon" />
-                Empleados
-              </a>
+              <Link to={"/pageCitas"} style={{ textDecoration: "none" }}>
+                <a className="nav-link" href="#">
+                  <FaCalendarAlt className="icon" />
+                  Citas
+                </a>
+              </Link>
             </nav>
           </div>
         </div>

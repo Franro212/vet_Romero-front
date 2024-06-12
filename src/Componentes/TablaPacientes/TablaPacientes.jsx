@@ -8,8 +8,11 @@ import pacientes from "../../../info.js";
 import PacientesModal from "../ModalPacientes/ModalPacientes.jsx";
 import { useState } from "react";
 import { Box, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-function TablaPacientes() {
+// eslint-disable-next-line react/prop-types
+function TablaPacientes({ historial }) {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [newPatient, setNewPatient] = useState(false);
@@ -69,42 +72,88 @@ function TablaPacientes() {
       ),
       renderCell: (params) => (
         <Box>
-          <Button
-            sx={{
-              width: "80px",
-              height: "35px",
-              fontSize: "15px",
-              color: "white",
-              fontWeight: "bold",
-              backgroundColor: "var(--primario)",
-              ":hover": {
-                backgroundColor: "#35c4bf",
-              },
-            }}
-            onClick={() => {
-              handleShowModal(params.row);
-            }}
-          >
-            Ver
-          </Button>
-          <Button
-            sx={{
-              height: "35px",
-              fontSize: "15px",
-              color: "white",
-              fontWeight: "bold",
-              marginLeft: "10px",
-              backgroundColor: " rgb(251, 65, 65)",
-              ":hover": {
-                backgroundColor: "#f56363",
-              },
-            }}
-            onClick={() => {
-              console.log("Button clicked:", params.row.id);
-            }}
-          >
-            X
-          </Button>
+          {historial ? (
+            <div className="cont-button">
+              <Button
+                sx={{
+                  width: "80px",
+                  height: "35px",
+                  fontSize: "15px",
+                  color: "#ffffff",
+                  fontWeight: "bold",
+                  backgroundColor: "var(--primario)",
+                  ":hover": {
+                    backgroundColor: "#35c4bf",
+                  },
+                }}
+                className="action btn-login"
+                onClick={() => {
+                  handleShowModal(params.row);
+                }}
+              >
+                Perfil
+              </Button>
+              <Button
+                sx={{
+                  width: "95px",
+                  height: "35px",
+                  fontSize: "15px",
+                  color: "#ffffff",
+                  marginLeft: "10px",
+                  fontWeight: "bold",
+                  backgroundColor: "var(--primario)",
+                  ":hover": {
+                    backgroundColor: "#35c4bf",
+                  },
+                }}
+                className="action btn-red btn-login"
+                onClick={() => {
+                  navigate("historialClinico");
+                }}
+              >
+                Historial
+              </Button>
+            </div>
+          ) : (
+            <Box>
+              <Button
+                sx={{
+                  width: "80px",
+                  height: "35px",
+                  fontSize: "15px",
+                  color: "white",
+                  fontWeight: "bold",
+                  backgroundColor: "var(--primario)",
+                  ":hover": {
+                    backgroundColor: "#35c4bf",
+                  },
+                }}
+                onClick={() => {
+                  handleShowModal(params.row);
+                }}
+              >
+                Ver
+              </Button>
+              <Button
+                sx={{
+                  height: "35px",
+                  fontSize: "15px",
+                  color: "white",
+                  fontWeight: "bold",
+                  marginLeft: "10px",
+                  backgroundColor: " rgb(251, 65, 65)",
+                  ":hover": {
+                    backgroundColor: "#f56363",
+                  },
+                }}
+                onClick={() => {
+                  console.log("Button clicked:", params.row.id);
+                }}
+              >
+                X
+              </Button>
+            </Box>
+          )}
         </Box>
       ),
     },
@@ -134,27 +183,32 @@ function TablaPacientes() {
         handleClose={handleCloseModal}
         patientData={selectedPatient}
         newPatient={newPatient}
-        hideButton={false}
+        hideButton={historial}
       />
-      <Button
-        onClick={() => {
-          handleShow();
-        }}
-        sx={{
-          width: "200px",
-          alignSelf: "flex-end",
-          fontSize: "15px",
-          color: "white",
-          fontWeight: "bold",
-          marginBottom: "10px",
-          backgroundColor: "var(--primario)",
-          ":hover": {
-            backgroundColor: "#35c4bf",
-          },
-        }}
-      >
-        Nuevo Paciente
-      </Button>
+      {historial ? (
+        ""
+      ) : (
+        <Button
+          onClick={() => {
+            handleShow();
+          }}
+          sx={{
+            width: "200px",
+            alignSelf: "flex-end",
+            fontSize: "15px",
+            color: "white",
+            fontWeight: "bold",
+            marginBottom: "10px",
+            backgroundColor: "var(--primario)",
+            ":hover": {
+              backgroundColor: "#35c4bf",
+            },
+          }}
+        >
+          Nuevo Paciente
+        </Button>
+      )}
+
       <DataGrid
         pageSize={rows.length}
         rows={rows}

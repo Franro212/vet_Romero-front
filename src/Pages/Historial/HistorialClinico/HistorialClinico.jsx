@@ -5,8 +5,10 @@ import "./historialClinico.css";
 
 import { useState } from "react";
 import ModalHistorial from "../../../Componentes/ModalHistorial/ModalHistorial";
+import { useNavigate } from "react-router-dom";
 
 function HistorialClinico() {
+  const navigate = useNavigate()
   const [showModal, setShowModal] = useState(false);
   const handleShowModal = () => {
     setShowModal(true);
@@ -71,11 +73,11 @@ function HistorialClinico() {
               alignSelf: "flex-end",
               fontSize: "15px",
               color: "white",
-              backgroundColor: "black",
               fontWeight: "bold",
               marginBottom: "10px",
+              backgroundColor: "var(--primario)",
               ":hover": {
-                backgroundColor: "#6B7280",
+                backgroundColor: "#35c4bf",
               },
             }}
             onClick={() => {
@@ -83,6 +85,25 @@ function HistorialClinico() {
             }}
           >
             Nueva ficha
+          </Button>
+          <Button
+            sx={{
+              width: "200px",
+              alignSelf: "flex-end",
+              fontSize: "15px",
+              color: "white",
+              fontWeight: "bold",
+              marginBottom: "10px",
+              backgroundColor: "#c9c9c9",
+              ":hover": {
+                backgroundColor: "var(--gray)",
+              },
+            }}
+            onClick={() => {
+              navigate('/pageHistorial')
+            }}
+          >
+            volver
           </Button>
           <Box id="fichas">
             {consultas.map((consulta, index) => (

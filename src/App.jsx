@@ -1,59 +1,100 @@
-import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import {
+  Container,
+  Card,
+  CardContent,
+  TextField,
+  Typography,
+  Button,
+  Box,
+} from "@mui/material";
 import "./app.css";
-import moment from "moment";
-import "moment/locale/es";
-moment.locale("es");
+import { loginUser } from "./Api/Rule_user";
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const navigate = useNavigate();
+
+  const submit = async (data) => {
+    console.log(data);
+    await loginUser(data)
+      .then(() => {
+        navigate("/pagePrincipal");
+      })
+      .catch((message) => {
+        alert(message);
+      });
+  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   return (
-    <div className="container_main">
-      <div className="container_card">
-        <img
-          className="logo"
-          src="/asets/logo_veterinaria-sinFondo.png"
-          alt="Logo Veterinaria"
-        />
-        <h2 className="title-form">Inicio de sesion</h2>
-
-        <div className="container_form">
-          <form className="form-login" action="#" method="POST">
-            <label htmlFor="email">Email</label>
-
-            <input
+    <Container sx={{ marginTop: "150px" }} maxWidth="sm">
+      <Card>
+        <CardContent>
+          <Box display="flex" justifyContent="center" mb={2}>
+            <img
+              className="logo"
+              src="\asets\logo_veterinaria-sinFondo.png"
+              alt="Logo Veterinaria"
+              style={{ width: "150px" }}
+            />
+          </Box>
+          <Typography variant="h5" component="h2" align="center" gutterBottom>
+            Inicio de sesión
+          </Typography>
+          <form onSubmit={handleSubmit(submit)}>
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Email"
               id="email"
-              name="email"
               type="email"
               autoComplete="email"
-              required
-              className=""
+              {...register("email", { required: "El email es obligatorio" })}
+              error={!!errors.email}
+              helperText={errors.email ? errors.email.message : ""}
             />
-
-            <label htmlFor="password" className="">
-              Password
-            </label>
-
-            <input
+            <TextField
+              fullWidth
+              margin="normal"
+              label="Password"
               id="password"
-              name="password"
               type="password"
               autoComplete="current-password"
-              required
-              className=""
+              {...register("password", {
+                required: "La contraseña es obligatoria",
+              })}
+              error={!!errors.password}
+              helperText={errors.password ? errors.password.message : ""}
             />
-
-            <a href="#" className="">
-              Forgot password?
-            </a>
-
-            <Link to={"/pagePrincipal"}>
-              <button type="submit" className="btn-login">
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mt={2}
+            >
+              <Button
+                sx={{
+                  width: "100%",
+                  height: "40px",
+                  fontSize: "16px",
+                  backgroundColor: "var(--primario)",
+                }}
+                type="submit"
+                variant="contained"
+                color="primary"
+              >
                 Enviar
-              </button>
-            </Link>
+              </Button>
+            </Box>
           </form>
-        </div>
-      </div>
-    </div>
+        </CardContent>
+      </Card>
+    </Container>
   );
 }
 
