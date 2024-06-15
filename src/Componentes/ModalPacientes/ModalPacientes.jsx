@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
-import "./modalPacientes.css";
+import { useEffect, useState } from "react";
+import { format } from "date-fns";
 import {
   Modal,
   Box,
@@ -12,7 +12,13 @@ import {
   Grid,
   IconButton,
 } from "@mui/material";
+import "./modalPacientes.css";
 import CloseIcon from "@mui/icons-material/Close";
+import { useForm, Controller } from "react-hook-form";
+import {
+  agregarPacientes,
+  modificarPaciente,
+} from "../../Api/Rule_Api_Pacientes";
 
 const PacientesModal = ({
   open,
@@ -20,49 +26,83 @@ const PacientesModal = ({
   patientData,
   newPatient,
   hideButton,
+  pacienteId,
 }) => {
+  const { control, handleSubmit, reset, watch } = useForm();
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState(patientData || {});
-
   useEffect(() => {
-    setFormData(patientData || {});
-    setIsEditing(false);
-  }, [patientData]);
-
-  useEffect(() => {
-    if (newPatient) {
+    if (patientData) {
+      const formattedData = {
+        ...patientData,
+        fechaNacimiento: patientData.fechaNacimiento
+          ? format(new Date(patientData.fechaNacimiento), "yyyy-MM-dd")
+          : "",
+        fechaVacunado: patientData.fechaVacunado
+          ? format(new Date(patientData.fechaVacunado), "yyyy-MM-dd")
+          : "",
+        fechaDesparasitado: patientData.fechaDesparasitado
+          ? format(new Date(patientData.fechaDesparasitado), "yyyy-MM-dd")
+          : "",
+        fechaAntipulgas: patientData.fechaAntipulgas
+          ? format(new Date(patientData.fechaAntipulgas), "yyyy-MM-dd")
+          : "",
+      };
+      reset(formattedData);
+      setIsEditing(false);
+    } else if (newPatient) {
+      reset({
+        propietario: "",
+        telefono: "",
+        socio: false,
+        numeroSocio: "",
+        nombreAnimal: "",
+        especie: "",
+        fechaNacimiento: "",
+        sexo: "",
+        castrado: false,
+        vacunado: false,
+        fechaVacunado: "",
+        desparasitado: false,
+        fechaDesparasitado: "",
+        antipulgas: false,
+        fechaAntipulgas: "",
+      });
       setIsEditing(true);
-      setFormData({});
     }
-  }, [newPatient]);
-
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === "checkbox" ? checked : value,
-    });
+  }, [patientData, newPatient, reset]);
+  const handleEdit = async (data) => {
+    try {
+      await modificarPaciente(data, pacienteId);
+      setIsEditing(false);
+      handleClose();
+    } catch (error) {
+      console.error("Error al modificar paciente:", error);
+    }
   };
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
-  const handleSave = () => {
-    // Lógica para guardar los datos
-    setIsEditing(false);
-    handleClose();
+  const onSubmit = async (data) => {
+    try {
+      await agregarPacientes(data);
+      setIsEditing(false);
+      handleClose();
+    } catch (error) {
+      console.error("Error al agregar paciente:", error);
+    }
   };
 
   const handleCancel = () => {
     if (newPatient) {
-      setFormData({});
+      reset({});
     } else {
-      setFormData(patientData);
+      reset(patientData);
     }
     setIsEditing(false);
     handleClose();
   };
+
+  const vacunado = watch("vacunado");
+  const desparasitado = watch("desparasitado");
+  const antipulgas = watch("antipulgas");
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -88,288 +128,324 @@ const PacientesModal = ({
         <Typography sx={{ fontSize: 30 }} variant="h6" component="h2">
           {newPatient ? "Agregar Nuevo Paciente" : "Información del Paciente"}
         </Typography>
-        <Box component="form" sx={{ mt: 2 }}>
+        <Box
+          component="form"
+          sx={{ mt: 2 }}
+          onSubmit={handleSubmit(newPatient ? onSubmit : handleEdit)}
+        >
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Propietario"
+              <Controller
                 name="propietario"
-                value={formData?.propietario || ""}
-                onChange={handleInputChange}
-                InputProps={{
-                  readOnly: !isEditing,
-                }}
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Propietario"
+                    InputProps={{
+                      readOnly: !isEditing,
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Teléfono"
+              <Controller
                 name="telefono"
-                value={formData?.telefono || ""}
-                onChange={handleInputChange}
-                InputProps={{
-                  readOnly: !isEditing,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="socio"
-                    checked={formData?.socio || false}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Teléfono"
+                    InputProps={{
+                      readOnly: !isEditing,
+                    }}
                   />
-                }
-                label="Socio"
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Número de Socio"
+              <Controller
+                name="socio"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        {...field}
+                        checked={field.value || false}
+                        disabled={!isEditing}
+                      />
+                    }
+                    label="Socio"
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Controller
                 name="numeroSocio"
-                value={formData?.id || ""}
-                onChange={handleInputChange}
-                InputProps={{
-                  readOnly: !isEditing,
-                }}
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Número de Socio"
+                    InputProps={{
+                      readOnly: !isEditing,
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Nombre del Animal"
+              <Controller
                 name="nombreAnimal"
-                value={formData?.nombre || ""}
-                onChange={handleInputChange}
-                InputProps={{
-                  readOnly: !isEditing,
-                }}
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Nombre del Animal"
+                    InputProps={{
+                      readOnly: !isEditing,
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Especie"
+              <Controller
                 name="especie"
-                value={formData?.especie || ""}
-                onChange={handleInputChange}
-                InputProps={{
-                  readOnly: !isEditing,
-                }}
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Especie"
+                    InputProps={{
+                      readOnly: !isEditing,
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Fecha de Nacimiento"
-                type="date"
+              <Controller
                 name="fechaNacimiento"
-                value={formData?.fechaNacimiento || ""}
-                onChange={handleInputChange}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                InputProps={{
-                  readOnly: !isEditing,
-                }}
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Fecha de Nacimiento"
+                    type="date"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    InputProps={{
+                      readOnly: !isEditing,
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Sexo"
+              <Controller
                 name="sexo"
-                value={formData?.sexo || ""}
-                onChange={handleInputChange}
-                InputProps={{
-                  readOnly: !isEditing,
-                }}
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Sexo"
+                    InputProps={{
+                      readOnly: !isEditing,
+                    }}
+                  />
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="castrado"
-                    checked={formData?.castrado || false}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
+              <Controller
+                name="castrado"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        {...field}
+                        checked={field.value || false}
+                        disabled={!isEditing}
+                      />
+                    }
+                    label="Castrado"
                   />
-                }
-                label="Castrado"
+                )}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="vacunado"
-                    checked={formData?.vacunado || false}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
+              <Controller
+                name="vacunado"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        {...field}
+                        checked={field.value || false}
+                        disabled={!isEditing}
+                      />
+                    }
+                    label="Vacunado"
                   />
-                }
-                label="Vacunado"
+                )}
               />
-              {formData?.vacunado && (
-                <TextField
-                  fullWidth
-                  type="date"
+              {vacunado && (
+                <Controller
                   name="fechaVacunado"
-                  value={formData?.fechaVacunado || ""}
-                  onChange={handleInputChange}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    readOnly: !isEditing,
-                  }}
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      type="date"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      InputProps={{
+                        readOnly: !isEditing,
+                      }}
+                    />
+                  )}
                 />
               )}
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="desparasitado"
-                    checked={formData?.desparasitado || false}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
+              <Controller
+                name="desparasitado"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        {...field}
+                        checked={field.value || false}
+                        disabled={!isEditing}
+                      />
+                    }
+                    label="Desparasitado"
                   />
-                }
-                label="Desparasitado"
+                )}
               />
-              {formData?.desparasitado && (
-                <TextField
-                  fullWidth
-                  type="date"
+              {desparasitado && (
+                <Controller
                   name="fechaDesparasitado"
-                  value={formData?.fechaDesparasitado || ""}
-                  onChange={handleInputChange}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    readOnly: !isEditing,
-                  }}
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      type="date"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      InputProps={{
+                        readOnly: !isEditing,
+                      }}
+                    />
+                  )}
                 />
               )}
             </Grid>
             <Grid item xs={12} sm={6}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="antipulgas"
-                    checked={formData?.antipulgas || false}
-                    onChange={handleInputChange}
-                    disabled={!isEditing}
+              <Controller
+                name="antipulgas"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        {...field}
+                        checked={field.value || false}
+                        disabled={!isEditing}
+                      />
+                    }
+                    label="Antipulgas/Garrapatas"
                   />
-                }
-                label="Antipulgas/Garrapatas"
+                )}
               />
-              {formData?.antipulgas && (
-                <TextField
-                  fullWidth
-                  type="date"
+              {antipulgas && (
+                <Controller
                   name="fechaAntipulgas"
-                  value={formData?.fechaAntipulgas || ""}
-                  onChange={handleInputChange}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    readOnly: !isEditing,
-                  }}
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      fullWidth
+                      type="date"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      InputProps={{
+                        readOnly: !isEditing,
+                      }}
+                    />
+                  )}
                 />
               )}
             </Grid>
           </Grid>
-        </Box>
-        {hideButton ? (
-          ""
-        ) : (
-          <Box sx={{ mt: 3, textAlign: "right" }}>
-            {newPatient ? (
-              <>
+          {!hideButton && (
+            <Box sx={{ mt: 3, textAlign: "right" }}>
+              {newPatient || isEditing ? (
+                <>
+                  <Button
+                    variant="contained"
+                    onClick={handleCancel}
+                    sx={{
+                      mr: 1,
+                      backgroundColor: "rgb(251, 65, 65)",
+                      ":hover": {
+                        backgroundColor: "#f56363",
+                      },
+                    }}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    sx={{
+                      mr: 1,
+                      backgroundColor: "var(--primario)",
+                      ":hover": {
+                        backgroundColor: "#35c4bf",
+                      },
+                    }}
+                  >
+                    {newPatient ? "Guardar" : "Actualizar"}
+                  </Button>
+                </>
+              ) : (
                 <Button
                   variant="contained"
-                  onClick={handleCancel}
-                  sx={{
-                    mr: 1,
-                    backgroundColor: " rgb(251, 65, 65)",
-                    ":hover": {
-                      backgroundColor: "#f56363",
-                    },
-                  }}
-                >
-                  Cancelar
-                </Button>
-                <Button
-                  variant="contained"
+                  onClick={() => setIsEditing(true)}
                   sx={{
                     backgroundColor: "var(--primario)",
                     ":hover": {
                       backgroundColor: "#35c4bf",
                     },
                   }}
-                  onClick={handleSave}
                 >
-                  Guardar
+                  Editar
                 </Button>
-              </>
-            ) : (
-              <>
-                {isEditing ? (
-                  <>
-                    <Button
-                      variant="contained"
-                      onClick={handleCancel}
-                      sx={{
-                        mr: 1,
-                        backgroundColor: " rgb(251, 65, 65)",
-                        ":hover": {
-                          backgroundColor: "#f56363",
-                        },
-                      }}
-                    >
-                      Cancelar
-                    </Button>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        backgroundColor: "var(--primario)",
-                        ":hover": {
-                          backgroundColor: "#35c4bf",
-                        },
-                      }}
-                      onClick={handleSave}
-                    >
-                      Guardar
-                    </Button>
-                  </>
-                ) : (
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "var(--primario)",
-                      ":hover": {
-                        backgroundColor: "#35c4bf",
-                      },
-                    }}
-                    onClick={handleEdit}
-                  >
-                    Editar
-                  </Button>
-                )}
-              </>
-            )}
-          </Box>
-        )}
+              )}
+            </Box>
+          )}
+        </Box>
       </Box>
     </Modal>
   );
