@@ -25,17 +25,17 @@ export const getFichaPorId = async (id_paciente) => {
   return await makeApiRequest("get", url);
 };
 
-export const agregarInmueble = async (formData, config) => {
+export const agregarPacientes = async (formData, config) => {
   const url = "/api/pacientes";
   return await makeApiRequest("post", url, formData, config);
 };
 
-export const modificarInmueble = async (ficha, id_paciente) => {
+export const modificarPaciente = async (ficha, id_paciente) => {
   const url = `/api/pacientes/${id_paciente}`;
   return await makeApiRequest("put", url, ficha);
 };
 
-export const eliminarInmueble = async (id_paciente) => {
-  const url = `/api/pacientes/${id_paciente}`;
+export const eliminarPaciente = async (id) => {
+  const url = `/api/pacientes/${id}`;
   return await makeApiRequest("delete", url);
 };
