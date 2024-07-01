@@ -16,10 +16,9 @@ function App() {
   const navigate = useNavigate();
 
   const submit = async (data) => {
-    console.log(data);
     await loginUser(data)
       .then(() => {
-        navigate("/pagePrincipal");
+        navigate("/pagePropietarios");
       })
       .catch((message) => {
         alert(message);

@@ -11,6 +11,7 @@ import Principal from "./Pages/Pacientes/Principal.jsx";
 import Historial from "./Pages/Historial/Historial.jsx";
 import HistorialClinico from "./Pages/Historial/HistorialClinico/HistorialClinico.jsx";
 import Citas from "./Pages/Citas/Citas.jsx";
+import Propietarios from "./Pages/Propietarios/Propietarios.jsx";
 
 // eslint-disable-next-line react/prop-types, react-refresh/only-export-components
 const ProtectedRoute = ({ children }) => {
@@ -27,10 +28,18 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "pagePrincipal",
+    path: "pagePacientes",
     element: (
       <ProtectedRoute>
         <Principal />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "pagePropietarios",
+    element: (
+      <ProtectedRoute>
+        <Propietarios />
       </ProtectedRoute>
     ),
   },
