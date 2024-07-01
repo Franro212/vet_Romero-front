@@ -1,5 +1,6 @@
 import { FaDog, FaCalendarAlt} from "react-icons/fa";
 import { FaRegClipboard } from "react-icons/fa6";
+import { IoPersonAddSharp } from "react-icons/io5";
 import "./nav.css";
 import { Link } from "react-router-dom";
 
@@ -17,7 +18,13 @@ function Nav() {
           </div>
           <div className="sidebar-body">
             <nav className="nav">
-              <Link style={{ textDecoration: "none" }} to={"/pagePrincipal"}>
+            <Link style={{ textDecoration: "none" }} to={"/pagePropietarios"}>
+                <a className="nav-link" href="#">
+                  <IoPersonAddSharp className="icon" />
+                  Propietarios
+                </a>
+              </Link>
+              <Link style={{ textDecoration: "none" }} to={"/pagePacientes"}>
                 <a className="nav-link" href="#">
                   <FaDog className="icon" />
                   Pacientes
