@@ -25,17 +25,17 @@ export const getFichaPorId = async (id_ficha) => {
   return await makeApiRequest("get", url);
 };
 
-export const agregarInmueble = async (formData, config) => {
+export const agregarFicha = async (formData, config) => {
   const url = "/api/historial";
   return await makeApiRequest("post", url, formData, config);
 };
 
-export const modificarInmueble = async (ficha, id_ficha) => {
+export const modificarFicha = async (ficha, id_ficha) => {
   const url = `/api/historial/${id_ficha}`;
   return await makeApiRequest("put", url, ficha);
 };
 
-export const eliminarInmueble = async (id_ficha) => {
+export const eliminarFicha = async (id_ficha) => {
   const url = `/api/Historial/${id_ficha}`;
   return await makeApiRequest("delete", url);
 };
